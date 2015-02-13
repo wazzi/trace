@@ -1,0 +1,63 @@
+
+/* 
+    Created on : Feb 10, 2015, 11:25:10 PM
+    Author     : kelli
+*/
+p{
+    font-family: sans-serif;
+    font-size: smaller;
+    color: cadetblue;
+}
+
+body {
+    font-family: sans-serif;
+    font-size: smaller;
+    color: grey;
+}
+
+body{
+    margin-left:  100px;
+    margin-right: 100px;
+    background: #ffffff;
+}
+
+.login_panel{
+    margin-top:100px;
+    border-style: solid;
+    border-width:thin;
+    border-color:   darkgray;
+    border-radius: 0px;
+    margin-left: auto;
+    margin-right:auto;
+    width:220px;
+}
+
+#nav-bar{
+    background: burlywood;
+    width:available;
+    height: 35px;
+    font-family: sans-serif;
+    font:bolder;
+    font-size: x-large;
+    color: darkolivegreen;
+    padding-top: 10px;
+    padding-left: 30px;
+}
+
+.top_bar{
+    padding-top:30px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: large;
+    color: cadetblue;
+    background-color: activecaption;
+}
+
+#spacer{
+    margin: 4px;
+    padding: 2px;
+}
