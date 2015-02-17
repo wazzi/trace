@@ -4,13 +4,12 @@
  * and open the template in the editor.
  */
 
-package servlets;
+package controllers.servlets;
 
 import domain.Login;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kelli
  */
-@WebServlet(name = "AdminAuth", urlPatterns = {"/admin_auth"})
-public class AdminAuth extends HttpServlet {
+public class LoginController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,17 +31,22 @@ public class AdminAuth extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        if(Login.validatePassword(password)){
-            request.setAttribute("user",username);
-            request.getRequestDispatcher("admin.jsp").forward(request, response);
-        }else{
-            
-        }
-    }
 
+        /**
+         * Validate user login details and return admin page
+         */
+        String userName=request.getParameter("user_name");
+        String password=request.getParameter("password");
+        
+        boolean isValid = Login.validateUser(userName, password);
+        if(isValid){
+                request.setAttribute("user", userName);
+                request.getRequestDispatcher("admin.html").forward(request, response);
+            }
+        else{
+                //show error message to user
+                }
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

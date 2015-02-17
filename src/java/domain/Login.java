@@ -5,9 +5,14 @@
  */
 package domain;
 
+import domain.entities.User;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 /**
  *
@@ -15,12 +20,21 @@ import java.security.SecureRandom;
  */
 public class Login {
 
+    private static EntityManagerFactory emf;
+    private static EntityManager em;
     private static final int SALT_BYTE_SIZE = 32;
 
+    
+    public static void connectToDB() {
+        emf = Persistence.createEntityManagerFactory("tracePU");
+        em = emf.createEntityManager();
+        System.out.println("--------------Connected to database-----------------");
+    }
+
     /**
-     Create 32 bit random string to use a salt for the hash
+     * Create 32 bit random string to use a salt for the hash
      */
-    public static String getSalt() {
+    private static String getSalt() {
         byte[] bytes = new byte[SALT_BYTE_SIZE]; //create an array for salt
         try {
             //provide a cryptographically secure random number generator 
@@ -34,10 +48,10 @@ public class Login {
     }
 
     /**
-     Generate a password hash using SHA-256 and salt string
-     *  Chances of cracking this: 1 to 2^256 !!!
+     * Generate a password hash using SHA-256 and salt string Chances of
+     * cracking this: 1 to 2^256 !!!
      */
-    public static String getSecurePassword(String password, String salt) {
+    private static String getSecurePassword(String password, String salt) {
         String generatedPassword = null;
         try {
             //create message digest  instance for MD5
@@ -59,37 +73,32 @@ public class Login {
         return generatedPassword;
     }
 
-    /**
-     * Steps 1. Retrieve password and salt from source e.g. database 2. Prepend
-     * salt to the given password and hash it using the same hash function 3.
-     * Compare the hash of the given function with the hash from the database.
-     * If a match is found the password is correct else the password is
-     * incorrect
-     *
-     * @param storedPassword
-     * @param userPassword
-     * @return
-     */
-    public static boolean validatePassword(String userPassword) {
+    public static boolean validateUser(String user, String password) {
 
-        boolean validity = false;
-        //stored slat and password
-        String salt = "[B@13e55db";
-        String storedPassHash = "e2134ee650a9620ba56d6131dae62b29f18a069d63db8549b2eb35e891ea4a43";
+        
+        Login.connectToDB();
+        boolean valid = false;
+        /**
+         * Steps: 1. Retrieve user from the database using the supplied username
+         * 2. Get the details of the user including the hash and salt values. 3.
+         * Create a hash value from the supplied password and compare with the
+         * stored value 4. If the generated hashes is similar to the stored
+         * hash, then the user is validated.
+         */
+        Query query = em.createNamedQuery("User.findByUserName");
+        query.setParameter("userName", user);
+        User u = (User) query.getSingleResult();
+
+        String storedHash = u.getPassword();
+        String storedSalt = u.getSaltVal();
 
         //hash the given password using the same algorithm and salt
-        String passToCheck = getSecurePassword(userPassword, salt);
-        System.out.println("\n================ Validation ===========================\n");
-        System.out.println("PassToCheck:  " + passToCheck);
-        System.out.println("StoredPassHash:  " + storedPassHash);
-        if (passToCheck.equals(storedPassHash)) {
-            System.out.println("The Password is OK");
-            validity = true;
-        } else {
-            System.out.println("The Password is False");
-
+        String generatedHash = getSecurePassword(password, storedSalt);
+        if (generatedHash.equals(storedHash)) {
+            valid = true;
         }
 
-        return validity;
+        return valid;
     }
+
 }

@@ -9,28 +9,13 @@ p{
     color: cadetblue;
 }
 
-body {
-    font-family: sans-serif;
-    font-size: smaller;
-    color: grey;
-}
-
 body{
     margin-left:  100px;
     margin-right: 100px;
     background: #ffffff;
 }
 
-.login_panel{
-    margin-top:100px;
-    border-style: solid;
-    border-width:thin;
-    border-color:   darkgray;
-    border-radius: 0px;
-    margin-left: auto;
-    margin-right:auto;
-    width:220px;
-}
+
 
 #nav-bar{
     background: burlywood;
@@ -45,17 +30,15 @@ body{
 }
 
 .top_bar{
-    padding-top:30px;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
+    margin-left: -100px;
+    margin-right: -100px;
     width: 100%;
     font-family: sans-serif;
-    font-size: large;
-    color: cadetblue;
-    background-color: activecaption;
+    font-size: 1.56em;
+    color: white;
+    background:activecaption;
 }
+
 
 #spacer{
     margin: 4px;
